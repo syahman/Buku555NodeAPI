@@ -36,6 +36,7 @@ kemahiran menggunakan cara ini. **Teori sahaja tidak membantu**
 
 **Rujukan**
 
-1.dfdfd
-2.dfdfdfd
+1.[https://jsao.io](https://jsao.io)
+2.[https://scotch.io](https://scotch.io)
+
 
