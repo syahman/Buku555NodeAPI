@@ -2,7 +2,7 @@
 
 Kod sumber ini untuk nota pembangunan API RESTfull menggunakan nodejs,express dan oracle. 
 Clone source code dan arahan berikut akan download semua dependencies. 
-[http://www.shmn.my/2015/10/30/rekabentukmemasangmenguji-rest-api-menggunakan-nodejsexpressjsoracle/](Nota Pembangunan RESTful API). 
+[Nota Pembangunan RESTful API](http://www.shmn.my/2015/10/30/rekabentukmemasangmenguji-rest-api-menggunakan-nodejsexpressjsoracle/)
 
     npm install
 
