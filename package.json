@@ -1,0 +1,22 @@
+{
+  "name": "buku555",
+  "version": "1.0.0",
+  "description": "aplikasi buku hutang mudah",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "jsonwebtoken": "^5.4.1",
+    "jwt-simple": "^0.3.1",
+    "md5": "^2.0.0",
+    "moment": "^2.10.6",
+    "morgan": "^1.6.1",
+    "oracledb": "^1.3.0",
+    "path": "^0.12.7"
+  }
+}
