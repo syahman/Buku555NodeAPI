@@ -1,6 +1,5 @@
 **API Aplikasi Buku Hutang 555**
 
-Asyik dengan contoh TODO list sahaja. Kita cuba contoh aplikasi Buku555 ini. 
 Kod sumber ini untuk nota pembangunan API RESTfull menggunakan nodejs,express dan oracle. 
 Clone source code dan arahan berikut akan download semua dependencies. 
 Tapi sebelum itu, pastikan anda bermula disini. [http://www.shmn.my/2015/10/30/rekabentukmemasangmenguji-rest-api-menggunakan-nodejsexpressjsoracle/](http://www.shmn.my/2015/10/30/rekabentukmemasangmenguji-rest-api-menggunakan-nodejsexpressjsoracle/). 
