@@ -6,12 +6,9 @@
 var oracledb = require('oracledb');
 var jwt = require('jwt-simple');
 var md5 = require('md5');
+var connAttrs = require('../config/db')();
 
-var connAttrs = {
-    "user": "buku555",
-    "password": "buku555",
-    "connectString": "localhost/XE"
-}
+
 
 var users = {
 

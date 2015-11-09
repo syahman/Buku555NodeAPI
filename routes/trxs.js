@@ -5,12 +5,8 @@
 
 var oracledb = require('oracledb');
 var moment = require('moment');
+var connAttrs = require('../config/db')();
 
-var connAttrs = {
-    "user": "buku555",
-    "password": "buku555",
-    "connectString": "localhost/XE"
-}
 
 // trxdate shoud receive input from client and formatted to oracle data type timestamp before insert
 // omitted for brevity, defaut to CURRENT_TIMESTAMP
