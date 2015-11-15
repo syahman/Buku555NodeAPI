@@ -1,3 +1,3 @@
 module.exports = function () {
-    return 'super.super.secret.shhh';
+    return '4dsdci34hckjhd384ydiehfw7df74gdh';
 }

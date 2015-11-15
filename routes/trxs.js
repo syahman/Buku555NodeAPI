@@ -45,8 +45,9 @@ var trxs = {
                         detailed_message: err.message
                     }));
                 } else {
-                    res.contentType('application/json').status(200);
-                    res.send(JSON.stringify({error:false,data : result.rows}));
+                    //res.contentType('application/json').status(200);
+                    //res.send(JSON.stringify({error:false,data : result.rows}));
+                    res.contentType('application/json').status(200).send(JSON.stringify(result.rows));
                 }
                 // Release the connection
                 connection.release(
@@ -72,6 +73,9 @@ var trxs = {
         var userid = req.validateduserid || '';
         var item = req.body.item || '';
         var trxtype = req.body.trxtype || '' ;
+
+        console.log('models-->');
+        console.log(req);
 
         //var userid = require('../utils/common').getuserid(req.validatedemel);
 

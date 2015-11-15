@@ -4,8 +4,8 @@
 
 module.exports = function () {
     var connAttrs = {
-        "user": "hr",
-        "password": "hr",
+        "user": "buku555",
+        "password": "buku555",
         "connectString": "localhost/XE"
     }
 return connAttrs;

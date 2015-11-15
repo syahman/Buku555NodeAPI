@@ -14,6 +14,7 @@ var users = {
 
     testoracle: function (req, res) {
 
+        console.log('connection '+ connAttrs.connectString);
 
 
         oracledb.getConnection(connAttrs, function (err, connection) {
@@ -62,11 +63,103 @@ var users = {
 
     // register new user ..
 
+
+    login : function (req,res) {
+
+
+
+        var password = req.body.password || '';
+        var emel = req.body.emel || '';
+
+        console.log(req.body);
+
+        if (password == '' || emel == '') {
+
+
+            res.status(401);
+            res.json({
+                "status": 401,
+                "error" : true,
+                "message": "Maaf,Lengkapkan Maklumat Yang Diperlukan"
+            });
+            return;
+        }
+
+        hashpassword = md5(password);
+
+        // insert new user
+
+        oracledb.getConnection(connAttrs, function (err, connection) {
+            if (err) {
+                // Error connecting to DB
+                res.set('Content-Type', 'application/json').status(500).send(JSON.stringify({
+                    status: 500,
+                    error: true,
+                    message: "Error connecting to DB",
+                    detailed_message: err.message
+                }));
+                return;
+            }
+            connection.execute("SELECT userid,emel FROM B_USERS WHERE emel=:emel and password=:hashpassword"
+                ,[emel,hashpassword], {
+                    outFormat: oracledb.OBJECT // Return the result as Object
+
+                },
+                function (err, result) {
+                    if (err || result.rows.length < 1) {
+                        // Error
+                        res.set('Content-Type', 'application/json');
+                        res.status(400);
+                        res.json({
+                            "status": 400,
+                            "error" : true,
+                            "message": "Log Masuk Tidak Berjaya"
+                        });
+                    } else {
+
+                        // Successfully created the resource and generate token and passing to users
+
+
+                        var payload = {
+                            userid : result.rows[0].USERID,
+                            emel : result.rows[0].EMEL
+                        }
+
+
+
+                        res.status(201);
+                        res.json({
+                            "status" : 201,
+                            "error": false,
+                            "message" : "Log Masuk Berjaya",
+                            "data" : genToken(payload)
+                        });
+
+                        return;
+                    }
+                    // Release the connection
+                    connection.release(
+                        function (err) {
+                            if (err) {
+                                console.error(err.message);
+                            } else {
+                                console.log("POST /login : Connection released");
+                            }
+                        });
+                });
+        });
+
+
+    },
+
+
     adduser: function (req, res) {
 
         var name = req.body.name || '';
         var password = req.body.password || '';
         var emel = req.body.emel || '';
+
+
 
 
         if (name == '' || password == '' || emel == '') {
@@ -140,7 +233,7 @@ var users = {
                         res.json({
                             "status" : 201,
                             "error": false,
-                            "message" : "Pengguna Telah Berjaya Dicipta. Generate token",
+                            "message" : "Pengguna Telah Berjaya Dicipta. Generated token",
                             "data" : genToken(payload)
                         });
 
@@ -185,12 +278,14 @@ var users = {
             connection.execute("SELECT * FROM B_USERS WHERE userid = :userid", [userid], {
                 outFormat: oracledb.OBJECT // Return the result as Object
             }, function (err, result) {
+
+
+
                 if (err || result.rows.length < 1) {
                     res.set('Content-Type', 'application/json');
                     var status = err ? 500 : 404;
                     res.status(status).send(JSON.stringify({
                         error:true,
-                        status: status,
                         message: err ? "Error getting the user profile" : "User doesn't exist",
                         detailed_message: err ? err.message : ""
                     }));
@@ -271,21 +366,24 @@ var users = {
 
                     else {
 
+
                         // Successfully created the resource and generate token and passing to users
 
-                        console.log(err);
                         var payload = {
-                            name : name,
-                            emel : emel
+                            userid : userid,
+                            emel : emel,
                         };
 
+                        // automatic generate token baru
 
+                        res.set('Content-Type', 'application/json');
                         res.status(201);
                         res.json({
                             "status" : 201,
                             "error": false,
-                            "message" : "Pengguna Telah Berjaya Dikemaskini. Generate token"
-
+                            "token" : true,
+                            "message" : "Maklumat Pengguna Telah Berjaya Dikemaskini",
+                            "data" : genToken(payload)
                         });
 
 

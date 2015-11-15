@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var router = express.Router();
 var auth = require('./auth.js');
 var user = require('./users.js');
@@ -10,11 +11,12 @@ var trx  = require('./trxs.js');
  * Routes that can be accessed by any one
  */
 
-router.post('/login', auth.login);
+router.get('/', info.info);
+
+router.post('/login', user.login);
 router.get('/about', info.info);
 router.get('/version', info.version);
 router.get('/testoracle',user.testoracle); //disable in production ..
-
 router.post('/register', user.adduser); // rekod baru users , no auth!
 
 /*
