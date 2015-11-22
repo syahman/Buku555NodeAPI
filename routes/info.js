@@ -24,7 +24,17 @@ var info = {
             "version" : "1.0.0"
         });
         return;
+    },
+    error:function (req, res) {
+        res.status(404);
+        res.json({
+            "error": true,
+            "message" : "Please use POST method for this route"
+        });
+        return;
     }
+
+
 };
 
 

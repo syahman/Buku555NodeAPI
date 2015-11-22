@@ -33,7 +33,7 @@ var trxs = {
                 return;
             }
 
-            connection.execute("SELECT * FROM B_TRXS WHERE userid=:userid", [userid], {
+            connection.execute("SELECT * FROM B_TRXS WHERE userid=:userid ORDER by TRXDATE DESC", [userid], {
                 outFormat: oracledb.OBJECT // Return the result as Object
             }, function (err, result) {
                 if (err) {
@@ -55,7 +55,7 @@ var trxs = {
                         if (err) {
                             console.error(err.message);
                         } else {
-                            console.log("GET /test : Connection released");
+                            console.log("GET /read : Connection released");
                         }
                     });
             });
@@ -73,6 +73,7 @@ var trxs = {
         var userid = req.validateduserid || '';
         var item = req.body.item || '';
         var trxtype = req.body.trxtype || '' ;
+        var trxdate = req.body.trxdate || '' ;
 
         console.log('models-->');
         console.log(req);
@@ -85,7 +86,7 @@ var trxs = {
 
 
 
-        if (amount == 0 || emel == '' || userid === 0 || item == '' || trxtype == '') {
+        if (amount == 0 || emel == '' || userid === 0 || item == '' || trxtype == '' ||  trxdate == '') {
 
 
             res.status(401);
@@ -112,8 +113,8 @@ var trxs = {
                 }));
                 return;
             }
-            connection.execute("INSERT INTO b_trxs VALUES (b_trxs_seq.nextval,:userid,:amount, CURRENT_TIMESTAMP,:item,:active,:trxtype)",
-                [userid,amount,item,1,trxtype], {
+            connection.execute("INSERT INTO b_trxs VALUES (b_trxs_seq.nextval,:userid,:amount, to_date(:trxdate,'YYYY/DD/MM HH:MI AM'),:item,:active,:trxtype)",
+                [userid,amount,trxdate,item,1,trxtype], {
                     autoCommit: true,
                     outFormat: oracledb.OBJECT // Return the result as Object
                 },
@@ -165,6 +166,8 @@ var trxs = {
         var userid = req.validateduserid || '';
         var item = req.body.item || '';
         var trxtype = req.body.trxtype || '' ;
+        var trxdate = req.body.trxdate || '' ;
+
 
         //var userid = require('../utils/common').getuserid(req.validatedemel);
 
@@ -174,7 +177,7 @@ var trxs = {
 
 
 
-        if (amount == 0 || emel == '' || userid === 0 || item == '' || trxtype == '') {
+        if (amount == 0 || emel == '' || userid === 0 || item == '' || trxtype == '' || trxdate == '') {
 
 
             res.status(401);
@@ -201,9 +204,9 @@ var trxs = {
                 }));
                 return;
             }
-            connection.execute("UPDATE b_trxs set amount = :amount,trxdate = CURRENT_TIMESTAMP, item = :item, trxtype = :trxtype where " +
+            connection.execute("UPDATE b_trxs set amount = :amount,trxdate = to_date(:trxdate,'YYYY/DD/MM HH:MI AM'), item = :item, trxtype = :trxtype where " +
                         "userid=:userid and trxid=:trxid",
-                [amount,item,trxtype,userid,req.params.trxid], {
+                [amount,trxdate,item,trxtype,userid,req.params.trxid], {
                     autoCommit: true,
                     outFormat: oracledb.OBJECT // Return the result as Object
                 },
@@ -247,31 +250,8 @@ var trxs = {
     deletetxn: function (req, res) {
 
 
-        //validation at client level 1st, but must provide basic validation/filters here
 
-        var confirm = req.body.confirm || 'N' ;
         var userid = req.validateduserid;
-
-        //var userid = require('../utils/common').getuserid(req.validatedemel);
-
-
-        //console.log('Date : ' + trxdate);
-        console.log('UserID With ' + req.validatedemel + ' : ' + req.validateduserid);
-
-
-
-        if (confirm!=='Y') {
-
-
-            res.status(401);
-            res.json({
-                "status": 401,
-                "error" : true,
-                "message": "Maaf,Sila Buat Pengesahan"
-            });
-            return;
-        }
-
 
 
         // update existing transaction ...
@@ -299,6 +279,7 @@ var trxs = {
                         res.set('Content-Type', 'application/json');
                         res.status(400).send(JSON.stringify({
                             status: 400,
+                            err: true,
                             message: err.message.indexOf("ORA-00001") > -1 ? "Error" : "Input Error",
                             detailed_message: err.message
                         }));

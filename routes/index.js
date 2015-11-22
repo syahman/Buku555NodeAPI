@@ -14,6 +14,7 @@ var trx  = require('./trxs.js');
 router.get('/', info.info);
 
 router.post('/login', user.login);
+router.get('/login',info.error);
 router.get('/about', info.info);
 router.get('/version', info.version);
 router.get('/testoracle',user.testoracle); //disable in production ..
@@ -42,7 +43,7 @@ router.post('/register', user.adduser); // rekod baru users , no auth!
 //router.post('/api/v1/users', user.adduser); // rekod baru users , no auth!
 router.get('/api/v1/users', user.readuser); // baca rekod users
 router.put('/api/v1/users', user.updateuser); // kemaskini rekod users
-//router.delete('/api/v1/users/:userid', user.delete); // not implemented
+//router.delete('/api/v1/users/:userid', user.delete);
 
 // endpoints transactions
 
